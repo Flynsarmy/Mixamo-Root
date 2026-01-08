@@ -112,11 +112,12 @@ def copyHips(root_bone_name="Root", hip_bone_name="mixamorig:Hips", name_prefix=
     channelbag = anim_utils.action_get_channelbag_for_slot(anim_data.action, anim_data.action_slot)
 
     for i in channelbag.fcurves:
-        hip_bone_fcvurve = 'pose.bones["'+hip_bone_name+'"].location'
-        if str(i.data_path)==hip_bone_fcvurve:
-            if i.array_index != 1:
-                channelbag.fcurves.remove(i)
-
+        if i is not None:
+            hip_bone_fcvurve = 'pose.bones["'+hip_bone_name+'"].location'
+            if str(i.data_path)==hip_bone_fcvurve:
+                if i.array_index != 1:
+                    channelbag.fcurves.remove(i)
+                    
     bpy.ops.pose.select_all(action='DESELECT')
     bpy.context.object.pose.bones[name_prefix + root_bone_name].select = True
     bpy.ops.graph.paste()
